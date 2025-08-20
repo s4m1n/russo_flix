@@ -18,7 +18,14 @@
   --breakpoint-xs: 480px;
 
   --background-image-hero-pattern: url("/hero-bg.png");
+  
+  /* Movie Details Page Colors */
+  --color-error: #e50914;
+  --color-rating: #ffd700;
+  --color-button: rgba(229, 9, 20, 0.8);
+  --color-button-hover: rgba(229, 9, 20, 1);
 }
+
 
 @layer base {
   body {
@@ -102,7 +109,7 @@
   }
 
   .movie-card {
-    @apply bg-dark-100 p-5 rounded-2xl shadow-inner shadow-light-100/10;
+    @apply bg-dark-100 p-5 rounded-2xl shadow-inner shadow-light-100/10 cursor-pointer;
 
     & img {
       @apply rounded-lg h-auto w-full;
