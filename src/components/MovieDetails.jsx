@@ -45,10 +45,15 @@ function MovieDetails() {
 
   useEffect(() => {
     fetchMovieDetails();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   if (isLoading) {
-    return <Spinner />;
+    return (
+      <div className="flex flex-col items-center justify-center p-8">
+        <Spinner />
+      </div>
+    );
   }
 
   if (error) {
@@ -79,7 +84,7 @@ function MovieDetails() {
   return (
     <div className="min-h-screen w-full text-white">
       <div
-        className="min-h-screen flex flex-col p-8"
+        className="min-h-screen flex flex-col p-8 rounded-2xl"
         style={{
           backgroundImage: movie.backdrop_path
             ? `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(${BACKDROP_BASE_URL}${movie.backdrop_path})`
@@ -118,6 +123,29 @@ function MovieDetails() {
                 </span>
               ))}
           </div>
+
+          {/* Trailer Section */}
+          {movie.videos &&
+            movie.videos.results &&
+            movie.videos.results.length > 0 && (
+              <div className="mb-8">
+                <h2 className="text-2xl font-semibold mb-4">Trailer</h2>
+                <div className="aspect-video w-full max-w-4xl mx-auto rounded-lg overflow-hidden shadow-lg">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${
+                      movie.videos.results.find(
+                        (video) =>
+                          video.type === "Trailer" && video.site === "YouTube"
+                      )?.key || movie.videos.results[0].key
+                    }`}
+                    title={`${movie.title} Trailer`}
+                    className="w-full h-full"
+                    allowFullScreen
+                    frameBorder="0"
+                  ></iframe>
+                </div>
+              </div>
+            )}
         </div>
 
         {/* Movie Content */}
@@ -143,7 +171,7 @@ function MovieDetails() {
           <div className="flex-grow">
             {/* Overview Section */}
             <div className="mb-8">
-              <h2 className="text-2xl font-semibold mb-2">Overview</h2>
+              <h2 className="text-2xl font-semibold mb-2">Storyline</h2>
               <p className="text-gray-300 leading-relaxed">{movie.overview}</p>
             </div>
 
@@ -253,7 +281,7 @@ function MovieDetails() {
         <div className="mt-auto flex justify-center">
           <Link
             to="/"
-            className="bg-purple-300 hover:bg-purple-400 font-bold py-3 px-6 rounded transition-colors"
+            className="bg-gradient-to-r from-purple-800 to-blue-800 font-bold py-3 px-6 rounded transition-colors"
           >
             Visit Home
           </Link>

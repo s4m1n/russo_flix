@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Search from "./Search";
 import Spinner from "./Spinner";
 import MovieCard from "./MovieCard";
+import { useNavigate } from "react-router-dom";
 
 const API_BASE_URL = "https://api.themoviedb.org/3";
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -15,6 +16,8 @@ const API_OPTIONS = {
 };
 
 function Home() {
+  const navigate = useNavigate();
+
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -97,15 +100,17 @@ function Home() {
         </h1>
       </header>
 
-      <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-
       {trendingMovies && trendingMovies.length > 0 && (
         <section className="trending">
-          <h2>Trending Movies (Top 10)</h2>
+          <h2>Global Top 10 Movies</h2>
 
           <ul>
             {trendingMovies.map((movie, index) => (
-              <li key={movie.$id || `trending-${index}`}>
+              <li
+                key={movie.$id || `trending-${index}`}
+                className="cursor-pointer"
+                onClick={() => navigate(`/movie/${movie.id}`)}
+              >
                 <p>{index + 1}</p>
                 <img
                   src={
@@ -121,11 +126,15 @@ function Home() {
         </section>
       )}
 
+      <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+
       <section className="all-movies">
         <h2 className="mt-[20px]">All Movies</h2>
 
         {isLoading ? (
-          <Spinner />
+          <div className="flex justify-center">
+            <Spinner />
+          </div>
         ) : errorMessage ? (
           <p className="text-red-500">{errorMessage}</p>
         ) : (
