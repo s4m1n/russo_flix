@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Spinner from "../components/Spinner";
+import { useWatchlist } from "../context/useWatchlist";
+import { useAuth } from "../context/useAuth";
+import { useToast } from "../context/useToast";
 
 const API_BASE_URL = "https://api.themoviedb.org/3";
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -19,7 +22,30 @@ function MovieDetails() {
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
+  const [isInList, setIsInList] = useState(false);
+  const [isWatchlistLoading, setIsWatchlistLoading] = useState(false);
+  const { addToWatchlist, removeFromWatchlist, isInWatchlist } = useWatchlist();
+  const { user } = useAuth();
+  const { showWarning, showSuccess } = useToast();
+
+  // Check if movie is in watchlist
+  useEffect(() => {
+    const checkWatchlistStatus = async () => {
+      if (user?.uid && movie?.id) {
+        try {
+          const inList = await isInWatchlist(movie.id);
+          setIsInList(inList);
+        } catch (error) {
+          console.error("Error checking watchlist status:", error);
+        }
+      } else {
+        setIsInList(false);
+      }
+    };
+
+    checkWatchlistStatus();
+  }, [user, movie, isInWatchlist]);
 
   const fetchMovieDetails = async () => {
     setIsLoading(true);
@@ -84,17 +110,27 @@ function MovieDetails() {
   return (
     <div className="min-h-screen w-full text-white">
       <div
-        className="min-h-screen flex flex-col p-8 rounded-2xl"
+        className="min-h-screen flex flex-col p-8 rounded-2xl relative"
         style={{
           backgroundImage: movie.backdrop_path
             ? `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(${BACKDROP_BASE_URL}${movie.backdrop_path})`
             : "none",
           backgroundSize: "cover",
           backgroundPosition: "center",
+          boxShadow:
+            "0px 12px 32px 0px #CECEFB05 inset, 0px 0px 100px 0px #AB8BFF4D",
         }}
       >
+        {/* Back Arrow Button */}
+        <Link
+          to="/"
+          className="absolute top-4 left-4 z-10 bg-black bg-opacity-50 hover:bg-opacity-70 text-white p-3 rounded-full transition-all duration-300 transform hover:scale-110"
+          title="Go Back"
+        >
+          <img src="/back-arrow.svg" alt="Back" className="w-6 h-6" />
+        </Link>
         {/* Movie Header */}
-        <div className="mb-8 text-center">
+        <div className="my-8 text-center">
           <h1 className="text-4xl font-bold mb-4">{movie.title}</h1>
           <div className="flex justify-center items-center gap-2 mb-4 text-gray-300">
             <span>{new Date(movie.release_date).getFullYear()}</span>
@@ -112,25 +148,117 @@ function MovieDetails() {
             </span>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-2 mb-8">
+          <div className="flex flex-wrap justify-center gap-2 mb-6">
             {movie.genres &&
               movie.genres.map((genre) => (
                 <span
                   key={genre.id}
-                  className="bg-opacity-10 bg-gray-100 text-white px-3 py-1 rounded-full text-sm"
+                  className="bg-opacity-10 bg-gray-100 text-white px-3 py-2 rounded-full text-sm"
                 >
                   {genre.name}
                 </span>
               ))}
+            {/* Watchlist Button */}
+            <div>
+              <button
+                onClick={async () => {
+                  if (!user) {
+                    showWarning("Please login to add movies to your watchlist");
+                    return;
+                  }
+
+                  if (isWatchlistLoading) return;
+
+                  setIsWatchlistLoading(true);
+                  try {
+                    if (isInList) {
+                      const success = await removeFromWatchlist(movie.id);
+                      if (success) {
+                        setIsInList(false);
+                        showSuccess(
+                          `"${movie.title}" removed from your watchlist!`
+                        );
+                      }
+                    } else {
+                      const success = await addToWatchlist({
+                        id: movie.id,
+                        title: movie.title,
+                        vote_average: movie.vote_average,
+                        poster_path: movie.poster_path,
+                        release_date: movie.release_date,
+                      });
+                      if (success) {
+                        setIsInList(true);
+                        showSuccess(
+                          `"${movie.title}" added to your watchlist!`
+                        );
+                      }
+                    }
+                  } catch (error) {
+                    console.error("Error updating watchlist:", error);
+                  } finally {
+                    setIsWatchlistLoading(false);
+                  }
+                }}
+                disabled={isWatchlistLoading}
+                className={`px-3 py-2 rounded-full font-bold text-sm transition-all duration-300 transform hover:scale-105 cursor-pointer flex items-center justify-center gap-2 min-w-[200px] ${
+                  isWatchlistLoading
+                    ? "bg-gray-500 cursor-not-allowed"
+                    : isInList
+                    ? "bg-gradient-to-r from-red-400 to-red-600 hover:from-red-700 hover:to-red-800 text-white"
+                    : "bg-gradient-to-r from-purple-800 to-blue-800 hover:from-purple-900 hover:to-blue-900 text-white"
+                }`}
+                title={
+                  isWatchlistLoading
+                    ? "Loading..."
+                    : isInList
+                    ? "- Remove from Watchlist"
+                    : "+ Add to Watchlist"
+                }
+              >
+                {isWatchlistLoading ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <span>{isInList ? "Removing..." : "Adding..."}</span>
+                  </>
+                ) : isInList ? (
+                  "- Remove from Watchlist"
+                ) : (
+                  "+ Add to Watchlist"
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Poster and Trailer Side by Side */}
+        <div className="flex flex-col lg:flex-row gap-8 mb-8">
+          {/* Movie Poster */}
+          <div className="flex-shrink-0 mx-auto lg:mx-0">
+            {movie.poster_path ? (
+              <img
+                src={`${IMAGE_BASE_URL}${movie.poster_path}`}
+                alt={movie.title}
+                className="w-full max-w-[250px] lg:max-w-[300px] rounded-lg shadow-lg"
+              />
+            ) : (
+              <img
+                src="/no-movie.png"
+                alt="No poster available"
+                className="w-full max-w-[250px] lg:max-w-[300px] rounded-lg shadow-lg"
+              />
+            )}
           </div>
 
           {/* Trailer Section */}
           {movie.videos &&
             movie.videos.results &&
             movie.videos.results.length > 0 && (
-              <div className="mb-8">
-                <h2 className="text-2xl font-semibold mb-4">Trailer</h2>
-                <div className="aspect-video w-full max-w-4xl mx-auto rounded-lg overflow-hidden shadow-lg">
+              <div className="flex-grow">
+                {/* <h2 className="text-2xl font-semibold mb-4 text-center lg:text-left">
+                  Trailer
+                </h2> */}
+                <div className="aspect-video w-full rounded-lg overflow-hidden shadow-lg">
                   <iframe
                     src={`https://www.youtube.com/embed/${
                       movie.videos.results.find(
@@ -149,26 +277,9 @@ function MovieDetails() {
         </div>
 
         {/* Movie Content */}
-        <div className="flex gap-8 mb-8 flex-col md:flex-row">
-          {/* Movie Poster */}
-          <div className="flex-shrink-0 mx-auto md:mx-0 mb-6 md:mb-0">
-            {movie.poster_path ? (
-              <img
-                src={`${IMAGE_BASE_URL}${movie.poster_path}`}
-                alt={movie.title}
-                className="w-full max-w-[300px] rounded-lg shadow-lg"
-              />
-            ) : (
-              <img
-                src="/no-movie.png"
-                alt="No poster available"
-                className="w-full max-w-[300px] rounded-lg shadow-lg"
-              />
-            )}
-          </div>
-
+        <div className="mb-8">
           {/* Movie Info */}
-          <div className="flex-grow">
+          <div>
             {/* Overview Section */}
             <div className="mb-8">
               <h2 className="text-2xl font-semibold mb-2">Storyline</h2>
@@ -275,16 +386,6 @@ function MovieDetails() {
                 </div>
               )}
           </div>
-        </div>
-
-        {/* Navigation Button */}
-        <div className="mt-auto flex justify-center">
-          <Link
-            to="/"
-            className="bg-gradient-to-r from-purple-800 to-blue-800 font-bold py-3 px-6 rounded transition-colors"
-          >
-            Visit Home
-          </Link>
         </div>
       </div>
     </div>

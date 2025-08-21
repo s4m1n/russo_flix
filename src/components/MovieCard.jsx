@@ -1,24 +1,76 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useWatchlist } from "../context/useWatchlist";
+import { useAuth } from "../context/useAuth";
+import { useToast } from "../context/useToast";
 
 const MovieCard = ({
-  movie: {
-    id,
-    title,
-    vote_average,
-    poster_path,
-    release_date,
-    original_language,
-  },
+  movie: { id, title, vote_average, poster_path, release_date },
 }) => {
-  const handleWatchlistClick = (e) => {
+  const { addToWatchlist, removeFromWatchlist, isInWatchlist } = useWatchlist();
+  const { user } = useAuth();
+  const { showWarning, showSuccess } = useToast();
+  const [isInList, setIsInList] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const checkWatchlistStatus = async () => {
+      if (user?.uid) {
+        try {
+          const inList = await isInWatchlist(id);
+          setIsInList(inList);
+        } catch (error) {
+          console.error("Error checking watchlist status:", error);
+        }
+      } else {
+        setIsInList(false);
+      }
+    };
+
+    checkWatchlistStatus();
+  }, [id, user, isInWatchlist]);
+
+  const handleWatchlistClick = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    // TODO: Implement watchlist functionality
-    console.log(`Added ${title} to watchlist`);
+
+    if (!user) {
+      showWarning("Please login to add movies to your watchlist");
+      return;
+    }
+
+    if (isLoading) return;
+
+    setIsLoading(true);
+    try {
+      if (isInList) {
+        const success = await removeFromWatchlist(id);
+        if (success) {
+          setIsInList(false);
+          showSuccess(`"${title}" removed from your watchlist!`);
+        }
+      } else {
+        const success = await addToWatchlist({
+          id,
+          title,
+          vote_average,
+          poster_path,
+          release_date,
+        });
+        if (success) {
+          setIsInList(true);
+          showSuccess(`"${title}" added to your watchlist!`);
+        }
+      }
+    } catch (error) {
+      console.error("Error updating watchlist:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <div className="movie-card">
+    <Link to={`/movie/${id}`} className="movie-card">
       <img
         src={
           poster_path
@@ -38,32 +90,44 @@ const MovieCard = ({
           </div>
 
           <span>•</span>
-          <p className="lang">{original_language}</p>
-
-          <span>•</span>
           <p className="year">
             {release_date ? release_date.split("-")[0] : "N/A"}
           </p>
 
-          <div className="movie-actions ml-4 flex gap-2">
-            <Link
-              to={`/movie/${id}`}
-              className="details-btn bg-blue-600 hover:bg-blue-700 text-white w-8 h-8 rounded-full flex items-center justify-center transition-colors text-sm font-bold"
-              title="View Details"
-            >
-              i
-            </Link>
+          <div>
             <button
               onClick={handleWatchlistClick}
-              className="watchlist-btn bg-[#AB8BFF] hover:bg-[#AB8BFF] text-white w-8 h-8 rounded-full flex items-center justify-center transition-colors text-sm font-bold cursor-pointer"
-              title="Add to Watchlist"
+              disabled={isLoading}
+              className={`watchlist-btn text-white w-full px-3 py-2 rounded-full flex items-center justify-center transition-colors text-sm font-bold cursor-pointer ${
+                isLoading
+                  ? "bg-gray-500 cursor-not-allowed"
+                  : isInList
+                  ? "bg-gradient-to-r from-red-400 to-red-600 hover:from-red-700 hover:to-red-800"
+                  : "bg-gradient-to-r from-purple-800 to-blue-800 hover:from-purple-900 hover:to-blue-900"
+              }`}
+              title={
+                isLoading
+                  ? "Loading..."
+                  : isInList
+                  ? "Remove from Watchlist"
+                  : "Add to Watchlist"
+              }
             >
-              +
+              {isLoading ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <span>{isInList ? "Removing..." : "Adding..."}</span>
+                </div>
+              ) : isInList ? (
+                "- Remove"
+              ) : (
+                "+ Watchlist"
+              )}
             </button>
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 export default MovieCard;
