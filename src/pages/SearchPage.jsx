@@ -4,16 +4,7 @@ import MovieCard from "../components/MovieCard";
 import Spinner from "../components/Spinner";
 import Pagination from "../components/Pagination";
 
-const API_BASE_URL = "https://api.themoviedb.org/3";
-const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
-
-const API_OPTIONS = {
-  method: "GET",
-  headers: {
-    accept: "application/json",
-    Authorization: `Bearer ${API_KEY}`,
-  },
-};
+import { API_BASE_URL, API_OPTIONS } from "../config/api";
 
 function SearchPage() {
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");

@@ -7,7 +7,7 @@ export const WatchlistProvider = ({ children }) => {
   const [watchlist, setWatchlist] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { user } = useAuth();
-  const { addToWatchlist: addToFirestore, removeFromWatchlist: removeFromFirestore, getWatchlist, checkIfInWatchlist } = useFirestore();
+  const { addToWatchlist: addToFirestore, removeFromWatchlist: removeFromFirestore, getWatchlist, checkIfInWatchlist, clearWatchlist: clearFirestoreWatchlist } = useFirestore();
 
   // Load watchlist from Firestore when user changes
   useEffect(() => {
@@ -79,10 +79,15 @@ export const WatchlistProvider = ({ children }) => {
   };
 
   const clearWatchlist = async () => {
-    if (!user?.uid) return;
-    // Note: This would require implementing a clearWatchlist function in firestore.js
-    // For now, we'll just clear the local state
-    setWatchlist([]);
+    if (!user?.uid) return false;
+    try {
+      await clearFirestoreWatchlist(user.uid);
+      setWatchlist([]);
+      return true;
+    } catch (error) {
+      console.error('Error clearing watchlist:', error);
+      return false;
+    }
   };
 
   const value = {

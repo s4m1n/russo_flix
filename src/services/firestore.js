@@ -70,11 +70,29 @@ export const useFirestore = () => {
     return data;
   }, []);
 
+  const clearWatchlist = async (userId) => {
+    try {
+      const querySnapshot = await getDocs(
+        collection(db, "users", userId, "watchlist")
+      );
+      const deletePromises = [];
+      querySnapshot.forEach((docSnapshot) => {
+        deletePromises.push(deleteDoc(docSnapshot.ref));
+      });
+      await Promise.all(deletePromises);
+      return true;
+    } catch (error) {
+      console.log(error, "Error clearing watchlist");
+      throw error;
+    }
+  };
+
   return {
     addDocument,
     addToWatchlist,
     checkIfInWatchlist,
     removeFromWatchlist,
     getWatchlist,
+    clearWatchlist,
   };
 };

@@ -5,18 +5,12 @@ import { useWatchlist } from "../context/useWatchlist";
 import { useAuth } from "../context/useAuth";
 import { useToast } from "../context/useToast";
 
-const API_BASE_URL = "https://api.themoviedb.org/3";
-const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
-const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
-const BACKDROP_BASE_URL = "https://image.tmdb.org/t/p/original";
-
-const API_OPTIONS = {
-  method: "GET",
-  headers: {
-    accept: "application/json",
-    Authorization: `Bearer ${API_KEY}`,
-  },
-};
+import {
+  API_BASE_URL,
+  API_OPTIONS,
+  IMAGE_BASE_URL,
+  BACKDROP_BASE_URL,
+} from "../config/api";
 
 function MovieDetails() {
   const { id } = useParams();

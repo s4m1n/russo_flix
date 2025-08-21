@@ -1,10 +1,14 @@
+import { useState } from "react";
 import { useAuth } from "../context/useAuth";
 import { useWatchlist } from "../context/useWatchlist";
+import { useToast } from "../context/useToast";
 import MovieCard from "../components/MovieCard";
 
 const Watchlist = () => {
   const { user } = useAuth();
   const { watchlist, clearWatchlist } = useWatchlist();
+  const { showSuccess, showError } = useToast();
+  const [isClearingAll, setIsClearingAll] = useState(false);
 
   if (!user) {
     return (
@@ -32,10 +36,38 @@ const Watchlist = () => {
                 your watchlist
               </p>
               <button
-                onClick={clearWatchlist}
-                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700 transition-colors text-sm cursor-pointer font-bold"
+                onClick={async () => {
+                  if (isClearingAll) return;
+                  
+                  setIsClearingAll(true);
+                  try {
+                    const success = await clearWatchlist();
+                    if (success) {
+                      showSuccess("All movies removed from your watchlist!");
+                    } else {
+                      showError("Failed to clear watchlist. Please try again.");
+                    }
+                  } catch {
+                     showError("An error occurred while clearing your watchlist.");
+                  } finally {
+                    setIsClearingAll(false);
+                  }
+                }}
+                disabled={isClearingAll}
+                className={`px-4 py-2 rounded-lg transition-colors text-sm font-bold flex items-center gap-2 ${
+                  isClearingAll
+                    ? "bg-gray-500 cursor-not-allowed text-white"
+                    : "bg-red-500 text-white hover:bg-red-700 cursor-pointer"
+                }`}
               >
-                Clear All
+                {isClearingAll ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <span>Clearing...</span>
+                  </>
+                ) : (
+                  "Clear All"
+                )}
               </button>
             </div>
 

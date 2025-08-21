@@ -94,9 +94,9 @@ const Navbar = () => {
           ) : (
             <button
               onClick={handleGoogleLogin}
-              className=" px-4 py-2 rounded-2xl bg-gray-700 flex items-center justify-center hover:bg-gray-600 transition-colors cursor-pointer"
+              className=" px-4 py-2 rounded-2xl bg-gradient-to-r from-[#D6C7FF] to-[#AB8BFF] text-black flex items-center justify-center  transition-colors cursor-pointer"
             >
-              <span className="text-white font-bold text-sm">Login</span>
+              <span className="font-bold text-sm">Login</span>
             </button>
           )}
         </div>
@@ -118,7 +118,7 @@ const Navbar = () => {
                   {user?.email?.charAt(0).toUpperCase()}
                 </div>
               ) : (
-                <div className="p-2 hover:bg-gray-700 rounded transition-colors">
+                <div className="p-2 mt-1 hover:bg-gray-700 rounded transition-colors">
                   <svg
                     className="w-6 h-6"
                     fill="none"
@@ -144,7 +144,7 @@ const Navbar = () => {
                     <Link
                       to="/watchlist"
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className="block px-4 py-3 hover:bg-gray-800 text-white transition-colors border-b border-gray-700"
+                      className="block px-4 py-3 bg-gradient-to-r from-[#AB8BFF] to-[#D6C7FF] text-black font-bold transition-colors border-b border-gray-700"
                     >
                       Watchlist
                     </Link>
@@ -153,7 +153,7 @@ const Navbar = () => {
                         handleLogout();
                         setIsMobileMenuOpen(false);
                       }}
-                      className="block w-full text-left px-4 py-3 hover:bg-gray-800 text-white transition-colors cursor-pointer"
+                      className="block w-full text-left px-4 py-3 bg-gradient-to-r from-[#AB8BFF] to-[#D6C7FF] text-black font-bold transition-colors cursor-pointer"
                     >
                       Logout
                     </button>
@@ -164,7 +164,7 @@ const Navbar = () => {
                       handleGoogleLogin();
                       setIsMobileMenuOpen(false);
                     }}
-                    className="block w-full text-left px-4 py-3 hover:bg-gray-800 text-white transition-colors cursor-pointer"
+                    className="block w-full text-left px-4 py-3 bg-gradient-to-r from-[#D6C7FF] to-[#AB8BFF] text-black transition-colors cursor-pointer"
                   >
                     Login
                   </button>
