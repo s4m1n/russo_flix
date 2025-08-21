@@ -75,7 +75,7 @@ const Navbar = () => {
                   <Link
                     to="/watchlist"
                     onClick={() => setIsDropdownOpen(false)}
-                    className="block px-4 py-2 hover:bg-gray-800 text-white transition-colors"
+                    className="block px-4 py-2 bg-gradient-to-r from-[#AB8BFF] to-[#D6C7FF] text-black transition-colors"
                   >
                     Watchlist
                   </Link>
@@ -84,7 +84,7 @@ const Navbar = () => {
                       handleLogout();
                       setIsDropdownOpen(false);
                     }}
-                    className="block w-full text-left px-4 py-2 hover:bg-gray-800 text-white transition-colors cursor-pointer"
+                    className="block w-full text-left px-4 py-2 bg-gradient-to-r from-[#AB8BFF] to-[#D6C7FF] text-black transition-colors cursor-pointer"
                   >
                     Logout
                   </button>

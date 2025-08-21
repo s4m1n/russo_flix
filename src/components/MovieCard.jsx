@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useWatchlist } from "../context/useWatchlist";
 import { useAuth } from "../context/useAuth";
 import { useToast } from "../context/useToast";
+import TrailerPopup from "./TrailerPopup";
 
 const MovieCard = ({
   movie: { id, title, vote_average, poster_path, release_date },
@@ -12,6 +13,9 @@ const MovieCard = ({
   const { showWarning, showSuccess } = useToast();
   const [isInList, setIsInList] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [hoverTimeout, setHoverTimeout] = useState(null);
 
   useEffect(() => {
     const checkWatchlistStatus = async () => {
@@ -29,6 +33,28 @@ const MovieCard = ({
 
     checkWatchlistStatus();
   }, [id, user, isInWatchlist]);
+
+  const handleMouseEnter = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePosition({
+      x: rect.left + rect.width / 2,
+      y: rect.top
+    });
+    
+    const timeout = setTimeout(() => {
+      setShowPopup(true);
+    }, 800); // Show popup after 800ms hover
+    
+    setHoverTimeout(timeout);
+  };
+
+  const handleMouseLeave = () => {
+    if (hoverTimeout) {
+      clearTimeout(hoverTimeout);
+      setHoverTimeout(null);
+    }
+    setShowPopup(false);
+  };
 
   const handleWatchlistClick = async (e) => {
     e.preventDefault();
@@ -70,7 +96,13 @@ const MovieCard = ({
   };
 
   return (
-    <Link to={`/movie/${id}`} className="movie-card">
+    <>
+      <Link 
+        to={`/movie/${id}`} 
+        className="movie-card"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
       <img
         src={
           poster_path
@@ -128,6 +160,13 @@ const MovieCard = ({
         </div>
       </div>
     </Link>
+    
+    <TrailerPopup 
+      movie={{ id, title, vote_average, poster_path, release_date }}
+      isVisible={showPopup}
+      position={mousePosition}
+    />
+  </>
   );
 };
 export default MovieCard;

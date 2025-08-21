@@ -2,13 +2,10 @@ import { useState, useEffect } from "react";
 import Spinner from "../components/Spinner";
 import MovieCard from "../components/MovieCard";
 import Pagination from "../components/Pagination";
-import { useNavigate } from "react-router-dom";
-
-import { API_BASE_URL, API_KEY, API_OPTIONS } from '../config/api';
+import TrendingMovieCard from "../components/TrendingMovieCard";
+import { API_BASE_URL, API_KEY, API_OPTIONS } from "../config/api";
 
 function Home() {
-  const navigate = useNavigate();
-
   const [movieList, setMovieList] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -87,25 +84,7 @@ function Home() {
         <section className="trending">
           <h2>Global Top 10 Movies</h2>
 
-          <ul>
-            {trendingMovies.map((movie, index) => (
-              <li
-                key={movie.$id || `trending-${index}`}
-                className="cursor-pointer"
-                onClick={() => navigate(`/movie/${movie.id}`)}
-              >
-                <p>{index + 1}</p>
-                <img
-                  src={
-                    movie.poster_path
-                      ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
-                      : "/no-movie.png"
-                  }
-                  alt={movie.title || "Movie"}
-                />
-              </li>
-            ))}
-          </ul>
+          <TrendingMovieCard movies={trendingMovies} />
         </section>
       )}
 
@@ -130,8 +109,7 @@ function Home() {
                 <MovieCard key={movie.id} movie={movie} />
               ))}
             </ul>
-            
-            {/* Pagination Controls */}
+
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
