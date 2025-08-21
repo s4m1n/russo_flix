@@ -4,22 +4,27 @@ A modern movie discovery application built with React, Tailwind CSS, and Firebas
 
 ## Features
 
-- **Movie Discovery**: Browse popular and trending movies
-- **Search Functionality**: Search for movies by title
+- **Movie Discovery**: Browse popular and trending movies with smooth animations
+- **Search Functionality**: Search for movies by title with enhanced UI feedback
 - **User Authentication**: Sign up and login with Firebase Auth
-- **Watchlist Management**: Add/remove movies to your personal watchlist
+- **Watchlist Management**: Add/remove movies to your personal watchlist with real-time updates
 - **Movie Details**: View detailed information about movies including cast, crew, and trailers
-- **Responsive Design**: Mobile-friendly interface with hamburger menu
+- **Responsive Design**: Mobile-friendly interface with animated hamburger menu
 - **Real-time Data**: Watchlist data persisted in Firestore
+- **Smooth Animations**: Page transitions, hover effects, and scroll-triggered animations
+- **Enhanced UX**: Loading skeletons, microinteractions, and responsive breakpoint transitions
+- **Modern UI**: Clean design with gradient text effects and smooth transitions
 
 ## Tech Stack
 
 - **Frontend**: React 18, Vite
-- **Styling**: Tailwind CSS
+- **Styling**: Tailwind CSS with custom animations
 - **Backend**: Firebase (Authentication & Firestore)
 - **API**: The Movie Database (TMDB) API
 - **State Management**: React Context API
-- **Routing**: React Router DOM
+- **Routing**: React Router DOM with page transitions
+- **Animations**: CSS transitions and keyframe animations
+- **UI/UX**: Custom hover effects and microinteractions
 
 ## Prerequisites
 
@@ -88,35 +93,50 @@ The application will be available at `http://localhost:5173`
 ```
 src/
 ├── components/          # Reusable UI components
-│   ├── MovieCard.jsx   # Movie display card
-│   ├── Navbar.jsx      # Navigation bar
-│   ├── Pagination.jsx  # Pagination component
-│   ├── Search.jsx      # Search input
+│   ├── MovieCard.jsx   # Movie display card with hover animations
+│   ├── Navbar.jsx      # Navigation bar with smooth transitions
+│   ├── Pagination.jsx  # Pagination component with animations
+│   ├── Search.jsx      # Search input with focus effects
 │   ├── Spinner.jsx     # Loading spinner
-│   └── Toast.jsx       # Toast notifications
+│   ├── Toast.jsx       # Toast notifications
+│   ├── TrailerPopup.jsx # Movie trailer popup
+│   └── TrendingMovieCard.jsx # Trending movies carousel
 ├── config/             # Configuration files
 │   └── api.js          # API constants and configuration
 ├── context/            # React Context providers
 │   ├── AuthContext.js  # Authentication context
 │   ├── WatchlistProvider.jsx # Watchlist state management
-│   └── ToastProvider.jsx     # Toast notifications
+│   ├── ToastProvider.jsx     # Toast notifications
+│   ├── authProvider.jsx      # Auth provider implementation
+│   ├── useAuth.js      # Auth hook
+│   ├── useToast.js     # Toast hook
+│   └── useWatchlist.js # Watchlist hook
 ├── pages/              # Main application pages
-│   ├── Home.jsx        # Homepage with movie discovery
-│   ├── MovieDetails.jsx # Individual movie details
-│   ├── SearchPage.jsx  # Search results page
+│   ├── Home.jsx        # Homepage with animated movie discovery
+│   ├── MovieDetails.jsx # Individual movie details with transitions
+│   ├── SearchPage.jsx  # Search results page with animations
 │   └── Watchlist.jsx   # User's watchlist page
 ├── services/           # External service integrations
 │   ├── firebase.js     # Firebase configuration
 │   └── firestore.js    # Firestore database operations
+├── index.css          # Global styles and animations
 └── main.jsx           # Application entry point
 ```
 
 ## Available Scripts
 
-- `npm run dev` - Start development server
+- `npm run dev` - Start development server (typically runs on http://localhost:5173)
 - `npm run build` - Build for production
 - `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
+- `npm run lint` - Run ESLint for code quality
+
+## Performance Features
+
+- **Optimized Loading**: Skeleton screens during data fetching
+- **Smooth Animations**: Hardware-accelerated CSS transitions
+- **Responsive Images**: Optimized movie poster loading
+- **Efficient State Management**: Context-based state with minimal re-renders
+- **Code Splitting**: Lazy loading for better performance
 
 ## Key Features Implementation
 
@@ -140,12 +160,16 @@ src/
 - Search functionality with pagination
 - Detailed movie information with cast and crew
 
-### Responsive Design
+### Responsive Design & Animations
 
-- Mobile-first approach
-- Hamburger menu for mobile navigation
-- Responsive grid layouts
-- Touch-friendly interactions
+- Mobile-first approach with smooth breakpoint transitions
+- Animated hamburger menu for mobile navigation
+- Responsive grid layouts with hover effects
+- Touch-friendly interactions with visual feedback
+- Scroll-triggered animations for content sections
+- Page transitions using CSS animations
+- Loading skeletons and microinteractions
+- Enhanced button and card hover effects
 
 ## API Integration
 
