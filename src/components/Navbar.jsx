@@ -27,7 +27,7 @@ const Navbar = () => {
     }
   };
 
-  // Close dropdown when clicking outside
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -56,7 +56,7 @@ const Navbar = () => {
           </div>
         </Link>
 
-        {/* Desktop Menu */}
+  
         <div className="hidden md:flex items-center gap-6">
           <Link to="/search" className="hover:text-gradient">
             <img src="search.svg" alt="Search Icon" />
@@ -101,13 +101,13 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* Mobile Menu */}
+
         <div className="flex md:hidden items-center gap-4">
           <Link to="/search">
             <img src="search.svg" alt="Search Icon" />
           </Link>
 
-          {/* Mobile Menu */}
+    
           <div className="relative" ref={mobileMenuRef}>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -136,7 +136,7 @@ const Navbar = () => {
               )}
             </button>
 
-            {/* Mobile Dropdown Menu */}
+    
             {isMobileMenuOpen && (
               <div className="absolute right-0 bg-gray-900 rounded-lg shadow-lg overflow-hidden z-50 min-w-[150px]">
                 {user ? (

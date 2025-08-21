@@ -16,7 +16,7 @@ export const ToastProvider = ({ children }) => {
 
     setToasts(prev => [...prev, newToast]);
 
-    // Auto remove toast after duration
+
     setTimeout(() => {
       removeToast(id);
     }, duration);
@@ -43,7 +43,7 @@ export const ToastProvider = ({ children }) => {
   return (
     <ToastContext.Provider value={value}>
       {children}
-      {/* Render toasts */}
+
       <div className="toast-container">
         {toasts.map((toast, index) => (
           <div

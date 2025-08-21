@@ -35,7 +35,7 @@ function Home() {
       }
 
       setMovieList(data.results || []);
-      setTotalPages(Math.min(data.total_pages || 1, 500)); // Limit to 500 pages for performance
+      setTotalPages(Math.min(data.total_pages || 1, 500));
       setCurrentPage(page);
     } catch (error) {
       console.log(`Error fetching movies: ${error}`);

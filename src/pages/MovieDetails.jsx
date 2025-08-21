@@ -23,7 +23,6 @@ function MovieDetails() {
   const { user } = useAuth();
   const { showWarning, showSuccess } = useToast();
 
-  // Check if movie is in watchlist
   useEffect(() => {
     const checkWatchlistStatus = async () => {
       if (user?.uid && movie?.id) {
@@ -82,7 +81,7 @@ function MovieDetails() {
         <p className="text-red-500 text-lg mb-4">{error}</p>
         <Link
           to="/"
-          className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition-colors"
+          className="bg-red-500 text-white hover:bg-red-700 font-bold py-2 px-4 rounded transition-colors"
         >
           Back to Home
         </Link>
@@ -94,7 +93,6 @@ function MovieDetails() {
     return null;
   }
 
-  // Format runtime to hours and minutes
   const formatRuntime = (minutes) => {
     const hours = Math.floor(minutes / 60);
     const mins = minutes % 60;
@@ -115,7 +113,6 @@ function MovieDetails() {
             "0px 12px 32px 0px #CECEFB05 inset, 0px 0px 100px 0px #AB8BFF4D",
         }}
       >
-        {/* Back Arrow Button */}
         <Link
           to="/"
           className="absolute top-4 left-4 z-10 bg-black bg-opacity-50 hover:bg-opacity-70 text-white p-3 rounded-full transition-all duration-300 transform hover:scale-110"
@@ -123,7 +120,7 @@ function MovieDetails() {
         >
           <img src="/back-arrow.svg" alt="Back" className="w-6 h-6" />
         </Link>
-        {/* Movie Header */}
+
         <div className="my-8 text-center">
           <h1 className="text-4xl font-bold mb-4">{movie.title}</h1>
           <div className="flex justify-center items-center gap-2 mb-4 text-gray-300">
@@ -135,11 +132,10 @@ function MovieDetails() {
               </>
             )}
             <span className="text-gray-500">•</span>
-            <span className="flex items-center gap-1 text-yellow-400">
-              <img src="/star.svg" alt="Rating" className="w-4 h-4" />
-              {movie.vote_average ? movie.vote_average.toFixed(1) : "N/A"}/10 (
-              {movie.vote_count || 0})
+            <span className="flex items-center gap-1 text-white font-bold">
+              ⭐ {movie.vote_average ? movie.vote_average.toFixed(1) : "N/A"}/10
             </span>
+            ({movie.vote_count || 0})
           </div>
 
           <div className="flex flex-wrap justify-center gap-2 mb-6">
@@ -152,7 +148,7 @@ function MovieDetails() {
                   {genre.name}
                 </span>
               ))}
-            {/* Watchlist Button */}
+
             <div>
               <button
                 onClick={async () => {
@@ -225,9 +221,7 @@ function MovieDetails() {
           </div>
         </div>
 
-        {/* Poster and Trailer Side by Side */}
         <div className="flex flex-col lg:flex-row gap-8 mb-8">
-          {/* Movie Poster */}
           <div className="flex-shrink-0 mx-auto lg:mx-0">
             {movie.poster_path ? (
               <img
@@ -244,7 +238,6 @@ function MovieDetails() {
             )}
           </div>
 
-          {/* Trailer Section */}
           {movie.videos &&
             movie.videos.results &&
             movie.videos.results.length > 0 && (
@@ -270,17 +263,13 @@ function MovieDetails() {
             )}
         </div>
 
-        {/* Movie Content */}
         <div className="mb-8">
-          {/* Movie Info */}
           <div>
-            {/* Overview Section */}
             <div className="mb-8">
               <h2 className="text-2xl font-semibold mb-2">Storyline</h2>
               <p className="text-gray-300 leading-relaxed">{movie.overview}</p>
             </div>
 
-            {/* Details Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
               <div>
                 <h3 className="text-gray-400 text-sm mb-1">Release date</h3>
@@ -361,7 +350,6 @@ function MovieDetails() {
               </div>
             </div>
 
-            {/* Cast Section */}
             {movie.credits &&
               movie.credits.cast &&
               movie.credits.cast.length > 0 && (

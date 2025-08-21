@@ -2,8 +2,8 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import MovieDetails from "./pages/MovieDetails";
 import SearchPage from "./pages/SearchPage";
-import Watchlist from "./pages/Watchlist";
 import Navbar from "./components/Navbar";
+import Watchlist from "./pages/Watchlist";
 
 function App() {
   return (

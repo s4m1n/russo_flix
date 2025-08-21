@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
       setIsLoading(false);
     });
 
-    // Cleanup subscription on unmount
+
     return () => unsubscribe();
   }, []);
 

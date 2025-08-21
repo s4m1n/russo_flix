@@ -3,7 +3,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     if (page >= 1 && page <= totalPages) {
       onPageChange(page);
       
-      // Scroll to All Movies section smoothly
       const allMoviesSection = document.querySelector('.all-movies');
       if (allMoviesSection) {
         allMoviesSection.scrollIntoView({ behavior: 'smooth' });
@@ -21,7 +20,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       startPage = Math.max(1, endPage - maxVisiblePages + 1);
     }
 
-    // Previous button
     if (currentPage > 1) {
       buttons.push(
         <button
@@ -34,7 +32,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       );
     }
 
-    // First page
     if (startPage > 1) {
       buttons.push(
         <button
@@ -54,7 +51,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       }
     }
 
-    // Page numbers
     for (let i = startPage; i <= endPage; i++) {
       buttons.push(
         <button
@@ -71,7 +67,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       );
     }
 
-    // Last page
     if (endPage < totalPages) {
       if (endPage < totalPages - 1) {
         buttons.push(
@@ -91,7 +86,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       );
     }
 
-    // Next button
     if (currentPage < totalPages) {
       buttons.push(
         <button
@@ -107,7 +101,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     return buttons;
   };
 
-  // Don't render if there's only one page or no pages
   if (totalPages <= 1) {
     return null;
   }

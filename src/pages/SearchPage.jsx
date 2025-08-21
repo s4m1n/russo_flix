@@ -48,7 +48,7 @@ function SearchPage() {
       }
 
       setMovieList(data.results || []);
-      setTotalPages(Math.min(data.total_pages || 1, 500)); // Limit to 500 pages for performance
+      setTotalPages(Math.min(data.total_pages || 1, 500));
       setCurrentPage(page);
     } catch (error) {
       console.log(`Error fetching movies: ${error}`);
@@ -58,7 +58,7 @@ function SearchPage() {
     }
   };
 
-  // Debounce search term
+
   useEffect(() => {
     const timerId = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
@@ -71,7 +71,7 @@ function SearchPage() {
 
   useEffect(() => {
     if (debouncedSearchTerm !== searchTerm) {
-      setCurrentPage(1); // Reset to first page when search term changes
+      setCurrentPage(1);
     }
     fetchMovies(
       debouncedSearchTerm,
@@ -141,7 +141,7 @@ function SearchPage() {
               ))}
             </ul>
 
-            {/* Pagination Controls */}
+    
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}

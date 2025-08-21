@@ -38,13 +38,13 @@ const MovieCard = ({
     const rect = e.currentTarget.getBoundingClientRect();
     setMousePosition({
       x: rect.left + rect.width / 2,
-      y: rect.top
+      y: rect.top,
     });
-    
+
     const timeout = setTimeout(() => {
       setShowPopup(true);
-    }, 800); // Show popup after 800ms hover
-    
+    }, 500);
+
     setHoverTimeout(timeout);
   };
 
@@ -97,76 +97,75 @@ const MovieCard = ({
 
   return (
     <>
-      <Link 
-        to={`/movie/${id}`} 
+      <Link
+        to={`/movie/${id}`}
         className="movie-card"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-      <img
-        src={
-          poster_path
-            ? `https://image.tmdb.org/t/p/w500/${poster_path}`
-            : "/no-movie.png"
-        }
-        alt={title}
-      />
+        <img
+          src={
+            poster_path
+              ? `https://image.tmdb.org/t/p/w500/${poster_path}`
+              : "/no-movie.png"
+          }
+          alt={title}
+        />
 
-      <div className="mt-4">
-        <h3>{title}</h3>
+        <div className="mt-4">
+          <h3>{title}</h3>
 
-        <div className="content">
-          <div className="rating">
-            <img src="star.svg" alt="Star Icon" />
-            <p>{vote_average ? vote_average.toFixed(1) : "N/A"}</p>
-          </div>
+          <div className="content">
+            <div className="rating">
+              <p>⭐ {vote_average ? vote_average.toFixed(1) : "N/A"}</p>
+            </div>
 
-          <span>•</span>
-          <p className="year">
-            {release_date ? release_date.split("-")[0] : "N/A"}
-          </p>
+            <span>•</span>
+            <p className="year">
+              {release_date ? release_date.split("-")[0] : "N/A"}
+            </p>
 
-          <div>
-            <button
-              onClick={handleWatchlistClick}
-              disabled={isLoading}
-              className={`watchlist-btn text-white w-full px-3 py-2 rounded-full flex items-center justify-center transition-colors text-sm font-bold cursor-pointer ${
-                isLoading
-                  ? "bg-gray-500 cursor-not-allowed"
-                  : isInList
-                  ? "bg-gradient-to-r from-red-400 to-red-600 hover:from-red-700 hover:to-red-800"
-                  : "bg-gradient-to-r from-purple-800 to-blue-800 hover:from-purple-900 hover:to-blue-900"
-              }`}
-              title={
-                isLoading
-                  ? "Loading..."
-                  : isInList
-                  ? "Remove from Watchlist"
-                  : "Add to Watchlist"
-              }
-            >
-              {isLoading ? (
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  <span>{isInList ? "Removing..." : "Adding..."}</span>
-                </div>
-              ) : isInList ? (
-                "- Remove"
-              ) : (
-                "+ Watchlist"
-              )}
-            </button>
+            <div>
+              <button
+                onClick={handleWatchlistClick}
+                disabled={isLoading}
+                className={`watchlist-btn text-white w-full px-3 py-2 rounded-full flex items-center justify-center transition-colors text-sm font-bold cursor-pointer ${
+                  isLoading
+                    ? "bg-gray-500 cursor-not-allowed"
+                    : isInList
+                    ? "bg-gradient-to-r from-red-400 to-red-600 hover:from-red-700 hover:to-red-800"
+                    : "bg-gradient-to-r from-purple-800 to-blue-800 hover:from-purple-900 hover:to-blue-900"
+                }`}
+                title={
+                  isLoading
+                    ? "Loading..."
+                    : isInList
+                    ? "Remove from Watchlist"
+                    : "Add to Watchlist"
+                }
+              >
+                {isLoading ? (
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <span>{isInList ? "Removing..." : "Adding..."}</span>
+                  </div>
+                ) : isInList ? (
+                  "- Remove"
+                ) : (
+                  "+ Watchlist"
+                )}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </Link>
-    
-    <TrailerPopup 
-      movie={{ id, title, vote_average, poster_path, release_date }}
-      isVisible={showPopup}
-      position={mousePosition}
-    />
-  </>
+      </Link>
+
+      <TrailerPopup
+        movie={{ id, title, vote_average, poster_path, release_date }}
+        isVisible={showPopup}
+        position={mousePosition}
+      />
+    </>
   );
 };
 export default MovieCard;

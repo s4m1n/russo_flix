@@ -17,9 +17,8 @@ const TrailerPopup = ({ movie, isVisible, position }) => {
     try {
       setIsLoading(true);
 
-      // Fetch movie details with videos
       const response = await fetch(
-        `${API_BASE_URL}/movie/${movie.id}?append_to_response=videos`,
+        `${API_BASE_URL}/movie/${movie?.id}?append_to_response=videos`,
         API_OPTIONS
       );
 
@@ -28,7 +27,6 @@ const TrailerPopup = ({ movie, isVisible, position }) => {
       const data = await response.json();
       setMovieDetails(data);
 
-      // Find trailer video
       const trailer = data.videos?.results?.find(
         (video) => video.type === "Trailer" && video.site === "YouTube"
       );
@@ -62,7 +60,6 @@ const TrailerPopup = ({ movie, isVisible, position }) => {
         </div>
       ) : (
         <>
-          {/* Trailer Video */}
           {trailerKey ? (
             <div className="relative mb-3">
               <iframe
@@ -80,7 +77,6 @@ const TrailerPopup = ({ movie, isVisible, position }) => {
             </div>
           )}
 
-          {/* Movie Details */}
           <div className="space-y-2">
             <h3 className="text-white font-bold text-lg line-clamp-2">
               {movie.title}
@@ -108,7 +104,7 @@ const TrailerPopup = ({ movie, isVisible, position }) => {
                   {movieDetails.genres?.slice(0, 3).map((genre) => (
                     <span
                       key={genre.id}
-                      className="bg-purple-600 text-white text-xs px-2 py-1 rounded-full"
+                      className="bg-purple-400 text-white text-xs px-2 py-1 rounded-full"
                     >
                       {genre.name}
                     </span>

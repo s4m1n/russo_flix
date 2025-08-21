@@ -9,7 +9,7 @@ export const WatchlistProvider = ({ children }) => {
   const { user } = useAuth();
   const { addToWatchlist: addToFirestore, removeFromWatchlist: removeFromFirestore, getWatchlist, checkIfInWatchlist, clearWatchlist: clearFirestoreWatchlist } = useFirestore();
 
-  // Load watchlist from Firestore when user changes
+
   useEffect(() => {
     const loadWatchlist = async () => {
       if (user?.uid) {
@@ -40,7 +40,7 @@ export const WatchlistProvider = ({ children }) => {
 
     try {
       await addToFirestore(user.uid, movie.id.toString(), movie);
-      // Refresh watchlist from Firestore
+    
       const updatedWatchlist = await getWatchlist(user.uid);
       setWatchlist(updatedWatchlist || []);
       return true;
@@ -58,7 +58,7 @@ export const WatchlistProvider = ({ children }) => {
 
     try {
       await removeFromFirestore(user.uid, movieId.toString());
-      // Refresh watchlist from Firestore
+    
       const updatedWatchlist = await getWatchlist(user.uid);
       setWatchlist(updatedWatchlist || []);
       return true;
