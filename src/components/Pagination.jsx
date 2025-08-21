@@ -25,9 +25,10 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         <button
           key="prev"
           onClick={() => handlePageChange(currentPage - 1)}
-          className="px-3 py-2 mx-1 bg-gradient-to-r from-purple-800 to-blue-800 text-white rounded transition-colors cursor-pointer"
+          className="px-2 py-1 sm:px-3 sm:py-2 mx-0.5 sm:mx-1 bg-gradient-to-r from-purple-800 to-blue-800 text-white rounded transition-colors cursor-pointer text-xs sm:text-sm"
         >
-          Previous
+          <span className="hidden sm:inline">Previous</span>
+          <span className="sm:hidden">Prev</span>
         </button>
       );
     }
@@ -37,14 +38,14 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         <button
           key={1}
           onClick={() => handlePageChange(1)}
-          className="px-3 py-2 mx-1 bg-gradient-to-r from-purple-800 to-blue-800 text-white rounded transition-colors cursor-pointer"
+          className="px-2 py-1 sm:px-3 sm:py-2 mx-0.5 sm:mx-1 bg-gradient-to-r from-purple-800 to-blue-800 text-white rounded transition-colors cursor-pointer text-xs sm:text-sm min-w-[32px] sm:min-w-[40px]"
         >
           1
         </button>
       );
       if (startPage > 2) {
         buttons.push(
-          <span key="ellipsis1" className="px-3 py-2 mx-1 text-gray-400">
+          <span key="ellipsis1" className="px-1 py-1 sm:px-3 sm:py-2 mx-0.5 sm:mx-1 text-gray-400 text-xs sm:text-sm">
             ...
           </span>
         );
@@ -56,7 +57,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         <button
           key={i}
           onClick={() => handlePageChange(i)}
-          className={`px-3 py-2 mx-1 rounded transition-colors cursor-pointer ${
+          className={`px-2 py-1 sm:px-3 sm:py-2 mx-0.5 sm:mx-1 rounded transition-colors cursor-pointer text-xs sm:text-sm min-w-[32px] sm:min-w-[40px] ${
             i === currentPage
               ? "bg-gradient-to-r from-purple-800 to-blue-800 text-white"
               : "bg-gray-700 hover:bg-gray-600 text-white"
@@ -70,7 +71,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     if (endPage < totalPages) {
       if (endPage < totalPages - 1) {
         buttons.push(
-          <span key="ellipsis2" className="px-3 py-2 mx-1 text-gray-400">
+          <span key="ellipsis2" className="px-1 py-1 sm:px-3 sm:py-2 mx-0.5 sm:mx-1 text-gray-400 text-xs sm:text-sm">
             ...
           </span>
         );
@@ -79,7 +80,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         <button
           key={totalPages}
           onClick={() => handlePageChange(totalPages)}
-          className="px-3 py-2 mx-1 bg-gray-700 hover:bg-gray-600 text-white rounded transition-colors cursor-pointer"
+          className="px-2 py-1 sm:px-3 sm:py-2 mx-0.5 sm:mx-1 bg-gray-700 hover:bg-gray-600 text-white rounded transition-colors cursor-pointer text-xs sm:text-sm min-w-[32px] sm:min-w-[40px]"
         >
           {totalPages}
         </button>
@@ -91,9 +92,10 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         <button
           key="next"
           onClick={() => handlePageChange(currentPage + 1)}
-          className="px-3 py-2 mx-1 bg-gradient-to-r from-purple-800 to-blue-800 text-white rounded transition-colors cursor-pointer"
+          className="px-2 py-1 sm:px-3 sm:py-2 mx-0.5 sm:mx-1 bg-gradient-to-r from-purple-800 to-blue-800 text-white rounded transition-colors cursor-pointer text-xs sm:text-sm"
         >
-          Next
+          <span className="hidden sm:inline">Next</span>
+          <span className="sm:hidden">Next</span>
         </button>
       );
     }
@@ -106,8 +108,8 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   }
 
   return (
-    <div className="flex justify-center items-center mt-8 mb-4">
-      <div className="flex flex-wrap justify-center">
+    <div className="flex justify-center items-center mt-6 sm:mt-8 mb-4 px-2">
+      <div className="flex flex-wrap justify-center items-center gap-1 sm:gap-0 max-w-full overflow-x-auto">
         {renderPaginationButtons()}
       </div>
     </div>
