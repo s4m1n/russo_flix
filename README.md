@@ -2,6 +2,12 @@
 
 A modern movie discovery application built with React, Tailwind CSS, and Firebase, featuring user authentication, watchlist management, and movie search capabilities.
 
+## Demo Video
+
+🎥 **Demo Video**: [View on Google Drive](https://drive.google.com/file/d/1I2MlnTPxv6PLHR48lAXruEX522RZn35T/view?usp=sharing)
+
+_The demo video showcases all the key features including user authentication, movie browsing, search functionality, and watchlist management._
+
 ## Features
 
 - **Movie Discovery**: Browse popular and trending movies with smooth animations
@@ -17,7 +23,7 @@ A modern movie discovery application built with React, Tailwind CSS, and Firebas
 
 ## Tech Stack
 
-- **Frontend**: React 18, Vite
+- **Frontend**: React 19, Vite
 - **Styling**: Tailwind CSS with custom animations
 - **Backend**: Firebase (Authentication & Firestore)
 - **API**: The Movie Database (TMDB) API
@@ -186,12 +192,6 @@ The application integrates with:
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
-
-## Demo Video
-
-🎥 **Demo Video**: [View on Google Drive](https://drive.google.com/your-demo-video-link)
-
-_The demo video showcases all the key features including user authentication, movie browsing, search functionality, and watchlist management._
 
 ## License
 
